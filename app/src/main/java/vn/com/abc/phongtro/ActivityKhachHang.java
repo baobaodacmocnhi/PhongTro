@@ -79,12 +79,15 @@ public class ActivityKhachHang extends AppCompatActivity {
                     if (radNu.isChecked() == true)
                         GioiTinh = "0";
 
+                    EditText txtDienThoai = (EditText) findViewById(R.id.txtDienThoai);
+                    EditText txtBienSoXe = (EditText) findViewById(R.id.txtBienSoXe);
+
                     Spinner cmbPhong = (Spinner) findViewById(R.id.cmbPhong);
                     String MaPhong = "NULL";
                     if (cmbPhong.getSelectedItem().toString().matches("") == false)
                         MaPhong = cmbValue.get(cmbPhong.getSelectedItemPosition());
 
-                    String resp = ws.ThemKhachHang(txtHoTen.getText().toString(), GioiTinh, MaPhong);
+                    String resp = ws.ThemKhachHang(txtHoTen.getText().toString(), GioiTinh, txtDienThoai.getText().toString(), txtBienSoXe.getText().toString(), MaPhong);
                     Toast.makeText(ActivityKhachHang.this, resp.toString(), Toast.LENGTH_SHORT).show();
                     onStart();
                 } catch (Exception ex) {
@@ -111,12 +114,15 @@ public class ActivityKhachHang extends AppCompatActivity {
                     if (radNu.isChecked() == true)
                         GioiTinh = "0";
 
+                    EditText txtDienThoai = (EditText) findViewById(R.id.txtDienThoai);
+                    EditText txtBienSoXe = (EditText) findViewById(R.id.txtBienSoXe);
+
                     Spinner cmbPhong = (Spinner) findViewById(R.id.cmbPhong);
                     String MaPhong = "NULL";
                     if (cmbPhong.getSelectedItem().toString().matches("") == false)
                         MaPhong = cmbValue.get(cmbPhong.getSelectedItemPosition());
 
-                    String resp = ws.SuaKhachHang(txtID.getText().toString(), txtHoTen.getText().toString(), GioiTinh, MaPhong);
+                    String resp = ws.SuaKhachHang(txtID.getText().toString(), txtHoTen.getText().toString(), GioiTinh, txtDienThoai.getText().toString(), txtBienSoXe.getText().toString(), MaPhong);
                     Toast.makeText(ActivityKhachHang.this, resp.toString(), Toast.LENGTH_SHORT).show();
 
                     onStart();
@@ -135,6 +141,8 @@ public class ActivityKhachHang extends AppCompatActivity {
                 EditText txtHoTen = (EditText) findViewById(R.id.txtHoTen);
                 RadioButton radNam = (RadioButton) findViewById(R.id.radNam);
                 RadioButton radNu = (RadioButton) findViewById(R.id.radNu);
+                EditText txtDienThoai = (EditText) findViewById(R.id.txtDienThoai);
+                EditText txtBienSoXe = (EditText) findViewById(R.id.txtBienSoXe);
                 Spinner cmbPhong = (Spinner) findViewById(R.id.cmbPhong);
 
                 String ID = ((TextView) view.findViewById(R.id.lvID)).getText().toString();
@@ -148,7 +156,8 @@ public class ActivityKhachHang extends AppCompatActivity {
                                 radNam.setChecked(true);
                             else
                                 radNu.setChecked(true);
-
+                            txtDienThoai.setText(obj.getProperty("DienThoai").toString());
+                            txtBienSoXe.setText(obj.getProperty("BienSoXe").toString());
                             try {
                                 Integer index = 0;
                                 for (Map.Entry<Integer, String> entry : cmbValue.entrySet()) {
@@ -220,15 +229,20 @@ public class ActivityKhachHang extends AppCompatActivity {
                 SoapObject obj = (SoapObject) tbKhachHang.getProperty(i);
                 lvEntity temp = new lvEntity();
                 temp.setID(obj.getProperty("ID").toString());
-                temp.setName(obj.getProperty("HoTen").toString());
+
                 try {
-                    String str = "";
+                    String str = obj.getProperty("HoTen").toString();
                     if (Boolean.parseBoolean(obj.getProperty("GioiTinh").toString()) == true)
-                        str += "Nam";
+                        str += " - Nam";
                     else
-                        str += "Nữ";
+                        str += " - Nữ";
                     str += " - Phòng:" + obj.getProperty("TenPhong").toString();
-                    temp.setContent(str);
+                    temp.setName(str);
+                } catch (Exception ex) {
+                }
+
+                try {
+                    temp.setContent(obj.getProperty("DienThoai").toString() + " - " + obj.getProperty("BienSoXe").toString());
                 } catch (Exception ex) {
                 }
 

@@ -63,7 +63,7 @@ public class WebService {
         return response;
     }
 
-    public String ThemKhachHang(String HoTen, String GioiTinh, String MaPhong) {
+    public String ThemKhachHang(String HoTen, String GioiTinh,String DienThoai,String BienSoXe, String MaPhong) {
         String SOAP_ACTION = "http://tempuri.org/ThemKhachHang";
         String OPERATION_NAME = "ThemKhachHang";
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
@@ -81,6 +81,18 @@ public class WebService {
         request.addProperty(pi);
 
         pi = new PropertyInfo();
+        pi.setName("DienThoai");
+        pi.setValue(DienThoai);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("BienSoXe");
+        pi.setValue(BienSoXe);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
         pi.setName("MaPhong");
         pi.setValue(MaPhong);
         pi.setType(String.class);
@@ -89,13 +101,12 @@ public class WebService {
         return ExcuteNonReturn(request, SOAP_ACTION);
     }
 
-    public String SuaKhachHang(String ID, String HoTen, String GioiTinh, String MaPhong) {
+    public String SuaKhachHang(String ID, String HoTen, String GioiTinh, String DienThoai,String BienSoXe,String MaPhong) {
         String SOAP_ACTION = "http://tempuri.org/SuaKhachHang";
         String OPERATION_NAME = "SuaKhachHang";
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
 
         PropertyInfo pi = new PropertyInfo();
-
         pi.setName("ID");
         pi.setValue(ID);
         pi.setType(String.class);
@@ -110,6 +121,18 @@ public class WebService {
         pi = new PropertyInfo();
         pi.setName("GioiTinh");
         pi.setValue(GioiTinh);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("DienThoai");
+        pi.setValue(DienThoai);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("BienSoXe");
+        pi.setValue(BienSoXe);
         pi.setType(String.class);
         request.addProperty(pi);
 
