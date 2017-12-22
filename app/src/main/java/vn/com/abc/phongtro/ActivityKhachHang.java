@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import vn.com.abc.entity.lvAdapter;
-import vn.com.abc.entity.lvEntity;
-
 public class ActivityKhachHang extends AppCompatActivity {
 
     private WebService ws = new WebService();

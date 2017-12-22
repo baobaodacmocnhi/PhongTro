@@ -1,4 +1,4 @@
-package vn.com.abc.entity;
+package vn.com.abc.phongtro;
 
 /**
  * Created by user on 22/08/2017.

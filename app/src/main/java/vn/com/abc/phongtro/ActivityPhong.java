@@ -15,9 +15,6 @@ import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
 
-import vn.com.abc.entity.lvAdapter;
-import vn.com.abc.entity.lvEntity;
-
 public class ActivityPhong extends AppCompatActivity {
 
     private WebService ws = new WebService();

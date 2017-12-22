@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +20,6 @@ import org.ksoap2.serialization.SoapObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import vn.com.abc.entity.lvAdapter;
-import vn.com.abc.entity.lvEntity;
 
 public class ActivityHoaDon extends AppCompatActivity {
 

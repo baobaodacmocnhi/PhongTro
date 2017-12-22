@@ -1,4 +1,4 @@
-package vn.com.abc.entity;
+package vn.com.abc.phongtro;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import vn.com.abc.phongtro.R;
 
 /**
  * Created by user on 18/08/2017.
