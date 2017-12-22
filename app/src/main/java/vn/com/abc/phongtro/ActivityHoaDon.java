@@ -132,7 +132,7 @@ public class ActivityHoaDon extends AppCompatActivity {
                 EditText txtChiSoNuoc = (EditText) findViewById(R.id.txtChiSoNuoc);
 
                 try {
-                    String resp = ws.ThemHoaDon(txtID.getText().toString(), txtChiSoDien.getText().toString(), txtChiSoNuoc.getText().toString());
+                    String resp = ws.SuaHoaDon(txtID.getText().toString(), txtChiSoDien.getText().toString(), txtChiSoNuoc.getText().toString());
                     Toast.makeText(ActivityHoaDon.this, resp.toString(), Toast.LENGTH_SHORT).show();
 
                     Button btnXem = (Button) findViewById(R.id.btnXem);

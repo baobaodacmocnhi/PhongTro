@@ -1,11 +1,14 @@
 package vn.com.abc.phongtro;
 
+import android.app.DatePickerDialog;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ActivityPhong extends AppCompatActivity {
 
@@ -31,6 +35,30 @@ public class ActivityPhong extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phong);
 
+        Button btnDate = (Button) findViewById(R.id.btnDate);
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener callback=new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        EditText txtNgayThue=(EditText) findViewById(R.id.txtNgayThue);
+                        txtNgayThue.setText(dayOfMonth + "/" + (month +1) + "/" + year);
+                    }
+                };
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                //Hiển thị ra Dialog
+                DatePickerDialog pic=new DatePickerDialog(
+                        ActivityPhong.this,
+                        callback,year,month,day);
+                //pic.setTitle("Chọn ngày hoàn thành");
+                pic.show();
+            }
+        });
+
         Button btnSua = (Button) findViewById(R.id.btnSua);
         btnSua.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +74,13 @@ public class ActivityPhong extends AppCompatActivity {
                     EditText txtSoNKNuoc = (EditText) findViewById(R.id.txtSoNKNuoc);
                     EditText txtChiSoDien = (EditText) findViewById(R.id.txtChiSoDien);
                     EditText txtChiSoNuoc = (EditText) findViewById(R.id.txtChiSoNuoc);
+                    EditText txtNgayThue = (EditText) findViewById(R.id.txtNgayThue);
+                    CheckBox chkThue=(CheckBox)findViewById(R.id.chkThue);
+                    String Thue="0";
+                    if(chkThue.isChecked())
+                        Thue="1";
 
-                    String resp = ws.SuaPhong(txtID.getText().toString(), txtName.getText().toString(), txtGiaTien.getText().toString(),txtSoNKNuoc.getText().toString(), txtChiSoDien.getText().toString(), txtChiSoNuoc.getText().toString());
+                    String resp = ws.SuaPhong(txtID.getText().toString(), txtName.getText().toString(), txtGiaTien.getText().toString(),txtSoNKNuoc.getText().toString(), txtChiSoDien.getText().toString(), txtChiSoNuoc.getText().toString(),txtNgayThue.getText().toString(),Thue);
                     Toast.makeText(ActivityPhong.this, resp.toString(), Toast.LENGTH_SHORT).show();
                     onStart();
                 } catch (Exception ex) {
@@ -67,6 +100,8 @@ public class ActivityPhong extends AppCompatActivity {
                 EditText txtSoNKNuoc = (EditText) findViewById(R.id.txtSoNKNuoc);
                 EditText txtChiSoDien = (EditText) findViewById(R.id.txtChiSoDien);
                 EditText txtChiSoNuoc = (EditText) findViewById(R.id.txtChiSoNuoc);
+                EditText txtNgayThue = (EditText) findViewById(R.id.txtNgayThue);
+                CheckBox chkThue=(CheckBox)findViewById(R.id.chkThue);
 
                 String ID=((TextView) view.findViewById(R.id.lvID)).getText().toString();
                 if (tbPhong != null) {
@@ -79,6 +114,13 @@ public class ActivityPhong extends AppCompatActivity {
                             txtSoNKNuoc.setText(obj.getProperty("SoNKNuoc").toString());
                             txtChiSoDien.setText(obj.getProperty("ChiSoDien").toString());
                             txtChiSoNuoc.setText(obj.getProperty("ChiSoNuoc").toString());
+                            if(obj.getProperty("NgayThue").toString()!="anyType{}")
+                            txtNgayThue.setText(obj.getProperty("NgayThue").toString());
+                            if (Boolean.parseBoolean(obj.getProperty("Thue").toString()) == true)
+                                chkThue.setChecked(true);
+                            else
+                                chkThue.setChecked(false);
+                            break;
                         }
 
                     }

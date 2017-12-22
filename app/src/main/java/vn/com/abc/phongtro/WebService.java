@@ -167,7 +167,7 @@ public class WebService {
         return ExcuteReturnTable(request, SOAP_ACTION);
     }
 
-    public String SuaPhong(String ID, String Name, String GiaTien, String SoNKNuoc,String ChiSoDien, String ChiSoNuoc) {
+    public String SuaPhong(String ID, String Name, String GiaTien, String SoNKNuoc,String ChiSoDien, String ChiSoNuoc,String NgayThue,String Thue) {
         String SOAP_ACTION = "http://tempuri.org/SuaPhong";
         String OPERATION_NAME = "SuaPhong";
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
@@ -206,6 +206,18 @@ public class WebService {
         pi = new PropertyInfo();
         pi.setName("ChiSoNuoc");
         pi.setValue(ChiSoNuoc);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("NgayThue");
+        pi.setValue(NgayThue);
+        pi.setType(String.class);
+        request.addProperty(pi);
+
+        pi = new PropertyInfo();
+        pi.setName("Thue");
+        pi.setValue(Thue);
         pi.setType(String.class);
         request.addProperty(pi);
 

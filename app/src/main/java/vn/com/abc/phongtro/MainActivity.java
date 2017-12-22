@@ -60,19 +60,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnTest = (Button) findViewById(R.id.button1);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Khởi tạo tiến trình của bạn
-                //Truyền Activity chính là MainActivity sang bên tiến trình của mình
-//                MyAsyncTask myAsyncTask = new MyAsyncTask(MainActivity.this);
-                //Gọi hàm execute để kích hoạt tiến trình
-//                myAsyncTask.execute();
-                String verName = BuildConfig.VERSION_NAME;
-                int verCode = BuildConfig.VERSION_CODE;
-                Toast.makeText(MainActivity.this, verName+" - "+verCode, Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 }

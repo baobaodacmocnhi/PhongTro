@@ -16,8 +16,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                def formattedDate = new Date().format('ddMMyyyy')
+                outputFileName = "PhongTro-${variant.versionName}-$formattedDate-.apk"
+            }
+        }
     }
-    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/Entity'] } }
+
 }
 
 dependencies {
