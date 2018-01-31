@@ -1,5 +1,8 @@
 package vn.com.abc.phongtro;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -18,6 +21,7 @@ public class WebService {
     public WebService() {
     }
 
+    @NonNull
     private String ExcuteNonReturn(SoapObject request, String SOAP_ACTION) {
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
                 SoapEnvelope.VER11);
@@ -39,6 +43,7 @@ public class WebService {
             return "Thất Bại";
     }
 
+    @Nullable
     private SoapObject ExcuteReturnTable(SoapObject request, String SOAP_ACTION) {
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
                 SoapEnvelope.VER11);

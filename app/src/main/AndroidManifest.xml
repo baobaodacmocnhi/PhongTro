@@ -3,6 +3,8 @@
     package="vn.com.abc.phongtro">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +24,7 @@
             android:name=".ActivityKhachHang"
             android:label="@string/ActivityKhachHang_name" />
         <activity
-            android:name=".ActivityPhong"
+            android:name=".ActivityPhong1"
             android:label="@string/ActivityPhong_name" />
         <activity
             android:name=".ActivityGiaDien"
@@ -30,9 +32,17 @@
         <activity
             android:name=".ActivityGiaNuoc"
             android:label="@string/ActivityGiaNuoc_name" />
-        <activity android:name=".ActivityHoaDon" android:label="@string/ActivityHoaDon_name">
-
-        </activity>
+        <activity
+            android:name=".ActivityHoaDon"
+            android:label="@string/ActivityHoaDon_name" />
+        <activity android:name=".ActivityTest" />
+        <activity android:name=".ActivityBluetooth" />
+        <activity
+            android:name=".ActivityPhong"
+            android:label="@string/title_activity_phong"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityPhongNhapLieu" />
+        <activity android:name=".ActivityPhongDanhSach"></activity>
     </application>
 
 </manifest>

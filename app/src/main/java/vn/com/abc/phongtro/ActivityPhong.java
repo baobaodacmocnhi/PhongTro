@@ -1,163 +1,177 @@
 package vn.com.abc.phongtro;
 
-import android.app.DatePickerDialog;
-import android.os.Bundle;
-import android.os.StrictMode;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.view.ViewGroup;
+
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.ksoap2.serialization.SoapObject;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ActivityPhong extends AppCompatActivity {
 
-    private WebService ws = new WebService();
-    private SoapObject tbPhong;
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // permits to make a HttpURLConnection
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phong);
 
-        Button btnDate = (Button) findViewById(R.id.btnDate);
-        btnDate.setOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener callback=new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        EditText txtNgayThue=(EditText) findViewById(R.id.txtNgayThue);
-                        txtNgayThue.setText(dayOfMonth + "/" + (month +1) + "/" + year);
-                    }
-                };
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                //Hiển thị ra Dialog
-                DatePickerDialog pic=new DatePickerDialog(
-                        ActivityPhong.this,
-                        callback,year,month,day);
-                //pic.setTitle("Chọn ngày hoàn thành");
-                pic.show();
+                finish();
             }
         });
 
-        Button btnSua = (Button) findViewById(R.id.btnSua);
-        btnSua.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    EditText txtID = (EditText) findViewById(R.id.txtID);
-                    if (txtID.getText().toString().matches("")) {
-                        Toast.makeText(ActivityPhong.this, "Chưa chọn Phòng", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    EditText txtName = (EditText) findViewById(R.id.txtName);
-                    EditText txtGiaTien = (EditText) findViewById(R.id.txtGiaTien);
-                    EditText txtSoNKNuoc = (EditText) findViewById(R.id.txtSoNKNuoc);
-                    EditText txtChiSoDien = (EditText) findViewById(R.id.txtChiSoDien);
-                    EditText txtChiSoNuoc = (EditText) findViewById(R.id.txtChiSoNuoc);
-                    EditText txtNgayThue = (EditText) findViewById(R.id.txtNgayThue);
-                    CheckBox chkThue=(CheckBox)findViewById(R.id.chkThue);
-                    String Thue="0";
-                    if(chkThue.isChecked())
-                        Thue="1";
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-                    String resp = ws.SuaPhong(txtID.getText().toString(), txtName.getText().toString(), txtGiaTien.getText().toString(),txtSoNKNuoc.getText().toString(), txtChiSoDien.getText().toString(), txtChiSoNuoc.getText().toString(),txtNgayThue.getText().toString(),Thue);
-                    Toast.makeText(ActivityPhong.this, resp.toString(), Toast.LENGTH_SHORT).show();
-                    onStart();
-                } catch (Exception ex) {
-                    Toast.makeText(ActivityPhong.this, ex.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EditText txtID = (EditText) findViewById(R.id.txtID);
-                EditText txtName = (EditText) findViewById(R.id.txtName);
-                EditText txtGiaTien = (EditText) findViewById(R.id.txtGiaTien);
-                EditText txtSoNKNuoc = (EditText) findViewById(R.id.txtSoNKNuoc);
-                EditText txtChiSoDien = (EditText) findViewById(R.id.txtChiSoDien);
-                EditText txtChiSoNuoc = (EditText) findViewById(R.id.txtChiSoNuoc);
-                EditText txtNgayThue = (EditText) findViewById(R.id.txtNgayThue);
-                CheckBox chkThue=(CheckBox)findViewById(R.id.chkThue);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
-                String ID=((TextView) view.findViewById(R.id.lvID)).getText().toString();
-                if (tbPhong != null) {
-                    for (int i = 0; i < tbPhong.getPropertyCount(); i++) {
-                        SoapObject obj = (SoapObject) tbPhong.getProperty(i);
-                        if(obj.getProperty("ID").toString()==ID){
-                            txtID.setText(obj.getProperty("ID").toString());
-                            txtName.setText(obj.getProperty("Name").toString());
-                            txtGiaTien.setText(obj.getProperty("GiaTien").toString());
-                            txtSoNKNuoc.setText(obj.getProperty("SoNKNuoc").toString());
-                            txtChiSoDien.setText(obj.getProperty("ChiSoDien").toString());
-                            txtChiSoNuoc.setText(obj.getProperty("ChiSoNuoc").toString());
-                            if(obj.getProperty("NgayThue").toString()!="anyType{}")
-                            txtNgayThue.setText(obj.getProperty("NgayThue").toString());
-                            if (Boolean.parseBoolean(obj.getProperty("Thue").toString()) == true)
-                                chkThue.setChecked(true);
-                            else
-                                chkThue.setChecked(false);
-                            break;
-                        }
-
-                    }
-                }
-
-            }
-        });
     }
 
-    @Override
-    protected void onStart() {
-        EditText txtID = (EditText) findViewById(R.id.txtID);
-        txtID.setText("");
-        EditText txtName = (EditText) findViewById(R.id.txtName);
-        txtName.setText("");
-        EditText txtGiaTien = (EditText) findViewById(R.id.txtGiaTien);
-        txtGiaTien.setText("");
 
-        tbPhong = ws.GetDSPhong();
-        ArrayList<lvEntity> list = new ArrayList<lvEntity>();
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_activity_phong, menu);
+//        return true;
+//    }
 
-        if (tbPhong != null) {
-            for (int i = 0; i < tbPhong.getPropertyCount(); i++) {
-                SoapObject obj = (SoapObject) tbPhong.getProperty(i);
-                lvEntity temp = new lvEntity();
-                temp.setID(obj.getProperty("ID").toString());
-                temp.setName(obj.getProperty("Name").toString());
-                String str = obj.getProperty("GiaTien").toString();
-                str += " - Chỉ Số Điện:" + obj.getProperty("ChiSoDien").toString();
-                str += " - Chỉ Số Nước:" + obj.getProperty("ChiSoNuoc").toString();
-                list.add(temp);
-            }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
-            ListView listView = (ListView) findViewById(R.id.listView);
-            lvAdapter adapter = new lvAdapter(this, list);
-            listView.setAdapter(adapter);
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
         }
-        super.onStart();
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_activity_phong, container, false);
+//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+//            return rootView;
+//        }
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+//            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    ActivityPhongDanhSach tab1 = new ActivityPhongDanhSach();
+                    return tab1;
+                case 1:
+                    ActivityPhongNhapLieu tab2 = new ActivityPhongNhapLieu();
+                    return tab2;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Danh Sách";
+                case 1:
+                    return "Nhập Liệu";
+            }
+            return null;
+        }
     }
 }
